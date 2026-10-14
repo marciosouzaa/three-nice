@@ -1,0 +1,14 @@
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+body {
+  min-width: 320px;
+}
+::selection {
+  background: #efc29455;
+  color: #fff8ef;
+}
