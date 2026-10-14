@@ -132,8 +132,7 @@ export function Ocean({ light, wind, paused, onReady, onError }: OceanProps) {
     resize()
     const move = (event: PointerEvent) => {
       if (event.pointerType === 'touch' || settings.current.paused) return
-      if ((event.target as Element).closest('button, a, input, .control-dock'))
-        return
+      if ((event.target as Element).closest('header, button, a')) return
       const bounds = host.getBoundingClientRect()
       pointer.set(
         THREE.MathUtils.clamp(

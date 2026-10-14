@@ -9,12 +9,13 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "playwright test",
-    "format": "prettier --write src tests scripts index.html README.md playwright.config.ts"
+    "format": "prettier --write src tests scripts index.html README.md 5.md playwright.config.ts"
   },
   "dependencies": {
     "lucide-react": "^1.57.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
+    "react-router": "^8.4.0",
     "three": "^0.186.1"
   },
   "devDependencies": {
