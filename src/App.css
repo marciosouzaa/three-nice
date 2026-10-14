@@ -219,6 +219,92 @@ button svg {
   justify-content: center;
   background: radial-gradient(ellipse at 65% 50%, #253045, #0d1422 72%);
 }
+.mars-experience {
+  background: #a77358;
+  color: #fff1df;
+}
+.mars-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(0deg, #241511b3, transparent 36%);
+}
+.mars-intro {
+  position: absolute;
+  left: 6.5%;
+  bottom: 110px;
+  pointer-events: none;
+}
+.mars-intro h1 {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 400;
+  font-size: clamp(28px, 2.9vw, 42px);
+  letter-spacing: -1.8px;
+  line-height: 1.2;
+  margin: 0 0 16px;
+  text-shadow: 0 2px 25px #2c171a44;
+}
+.mars-intro p {
+  font-size: 12px;
+  line-height: 1.9;
+  color: #f5d9c3;
+  margin: 0;
+}
+.mars-caption {
+  position: absolute;
+  right: 7%;
+  bottom: 115px;
+  font-size: 11px;
+  color: #f5d9c3;
+  pointer-events: none;
+}
+.mars-experience .footer {
+  color: #ead0ba;
+}
+@media (max-width: 900px) {
+  .collection-header {
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 18px 6% 10px;
+  }
+  .collection-note {
+    display: none;
+  }
+  .experience-nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+    gap: 3px;
+    overflow: visible;
+  }
+  .experience-link {
+    flex-direction: column;
+    gap: 2px;
+    padding: 7px 3px;
+    font-size: 11px;
+    min-height: 36px;
+  }
+  .experience-link small {
+    font-size: 7px;
+  }
+  .mars-intro {
+    left: 7%;
+    bottom: 115px;
+    max-width: 85%;
+  }
+  .mars-intro h1 {
+    font-size: 32px;
+    max-width: 260px;
+    letter-spacing: -1.4px;
+  }
+  .mars-intro p {
+    font-size: 11px;
+  }
+  .mars-caption {
+    bottom: 85px;
+    font-size: 9px;
+  }
+}
 .planned-content {
   width: min(690px, 86%);
   text-align: center;
@@ -1270,6 +1356,123 @@ button svg {
     font-size: 11px;
   }
   .tunnel-caption > span:last-child {
+    font-size: 8px;
+  }
+}
+.solar-experience {
+  background: #050811;
+  color: #e9edf5;
+}
+.solar-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(0deg, #050811bb, transparent 35%);
+}
+.solar-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.solar-planet-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 10px;
+  color: #aab7ca;
+  white-space: nowrap;
+  text-shadow: 0 1px 6px #050811;
+  opacity: 0.7;
+}
+.solar-planet-label.is-highlighted {
+  color: #f5eddf;
+  opacity: 1;
+}
+.solar-intro {
+  position: absolute;
+  left: 6.5%;
+  bottom: 110px;
+  pointer-events: none;
+}
+.solar-intro h1 {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 400;
+  font-size: clamp(32px, 3.2vw, 46px);
+  letter-spacing: -1.8px;
+  line-height: 1.15;
+  margin: 0 0 17px;
+}
+.solar-intro p {
+  color: #a9b6c8;
+  font-size: 11px;
+  line-height: 1.9;
+  margin: 0;
+}
+.solar-facts {
+  position: absolute;
+  right: 7%;
+  bottom: 110px;
+  width: 260px;
+  pointer-events: none;
+}
+.solar-facts-mark {
+  display: block;
+  height: 4px;
+  width: 25px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+}
+.solar-facts h2 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0 0 10px;
+  color: #d9e1ed;
+}
+.solar-facts.has-planet h2 {
+  font-size: 24px;
+}
+.solar-facts p {
+  font-size: 11px;
+  line-height: 1.9;
+  margin: 0;
+  color: #a9b6c8;
+}
+.solar-experience .footer {
+  color: #93a0b4;
+}
+@media (max-width: 760px) {
+  .solar-intro {
+    left: 7%;
+    bottom: 165px;
+  }
+  .solar-intro h1 {
+    font-size: 32px;
+    letter-spacing: -1.4px;
+    margin-bottom: 13px;
+  }
+  .solar-intro p {
+    font-size: 10px;
+  }
+  .solar-facts {
+    left: 7%;
+    right: auto;
+    bottom: 68px;
+    width: 85%;
+  }
+  .solar-facts-mark {
+    display: none;
+  }
+  .solar-facts h2,
+  .solar-facts.has-planet h2 {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .solar-facts p {
+    font-size: 10px;
+  }
+  .solar-planet-label {
     font-size: 8px;
   }
 }

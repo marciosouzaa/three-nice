@@ -10,6 +10,8 @@ const ParticlesPage = lazy(() => import('./pages/ParticlesPage'))
 const LiquidPage = lazy(() => import('./pages/LiquidPage'))
 const PlanetPage = lazy(() => import('./pages/PlanetPage'))
 const TunnelPage = lazy(() => import('./pages/TunnelPage'))
+const MarsPage = lazy(() => import('./pages/MarsPage'))
+const SolarSystemPage = lazy(() => import('./pages/SolarSystemPage'))
 
 function App() {
   const { pathname } = useLocation()
@@ -41,6 +43,8 @@ function App() {
           <Route path="/liquido" element={<LiquidPage />} />
           <Route path="/planeta" element={<PlanetPage />} />
           <Route path="/tunel" element={<TunnelPage />} />
+          <Route path="/marte" element={<MarsPage />} />
+          <Route path="/sistema-solar" element={<SolarSystemPage />} />
           <Route path="*" element={<Navigate to="/mare" replace />} />
         </Routes>
       </Suspense>

@@ -12,7 +12,7 @@ test('home redirects to Maré and navigation switches scenes without leaking can
   await expect(page).toHaveURL(/\/mare$/)
   await expect(page.locator('.mare-experience')).toHaveClass(/is-ready/)
   const nav = page.getByRole('navigation', { name: 'Experiências Three.js' })
-  await expect(nav.getByRole('link')).toHaveCount(5)
+  await expect(nav.getByRole('link')).toHaveCount(7)
   await expect(
     nav.getByRole('link', { name: 'Maré', exact: true }),
   ).toHaveAttribute('aria-current', 'page')
@@ -36,16 +36,24 @@ test('home redirects to Maré and navigation switches scenes without leaking can
     await expect(page.locator('.tunnel-experience')).toHaveClass(/is-ready/)
     await expect(page.locator('canvas')).toHaveCount(1)
     await expect(page.locator('.scene-error')).toHaveCount(0)
+    await nav.getByRole('link', { name: 'Marte', exact: true }).click()
+    await expect(page.locator('.mars-experience')).toHaveClass(/is-ready/)
+    await expect(page.locator('canvas')).toHaveCount(1)
+    await expect(page.locator('.scene-error')).toHaveCount(0)
+    await nav.getByRole('link', { name: 'Sistema solar', exact: true }).click()
+    await expect(page.locator('.solar-experience')).toHaveClass(/is-ready/)
+    await expect(page.locator('canvas')).toHaveCount(1)
+    await expect(page.locator('.scene-error')).toHaveCount(0)
     await nav.getByRole('link', { name: 'Maré', exact: true }).click()
     await expect(page.locator('.mare-experience')).toHaveClass(/is-ready/)
     await expect(page.locator('canvas')).toHaveCount(1)
   }
   await page.goBack()
-  await expect(page).toHaveURL(/\/tunel$/)
-  await expect(page.locator('.tunnel-experience')).toHaveClass(/is-ready/)
+  await expect(page).toHaveURL(/\/sistema-solar$/)
+  await expect(page.locator('.solar-experience')).toHaveClass(/is-ready/)
   await page.reload()
-  await expect(page.locator('.tunnel-experience')).toHaveClass(/is-ready/)
-  await expect(page).toHaveTitle('Túnel — Three Nice')
+  await expect(page.locator('.solar-experience')).toHaveClass(/is-ready/)
+  await expect(page).toHaveTitle('Sistema solar — Three Nice')
   expect(errors).toEqual([])
 })
 
@@ -87,7 +95,7 @@ test('particle shapes morph with the mouse and render three distinct images', as
   await expect(page.locator('.scene-error')).toHaveCount(0)
 })
 
-test('mobile navigation is usable and reduced motion keeps all five scenes still', async ({
+test('mobile navigation is usable and reduced motion keeps all seven scenes still', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 })
@@ -98,6 +106,8 @@ test('mobile navigation is usable and reduced motion keeps all five scenes still
     '/liquido',
     '/planeta',
     '/tunel',
+    '/marte',
+    '/sistema-solar',
   ]) {
     await page.goto(route)
     await expect(page.locator('.experience')).toHaveClass(/is-ready/)
@@ -121,7 +131,9 @@ test('mobile navigation is usable and reduced motion keeps all five scenes still
     expect((await canvas.screenshot()).equals(still)).toBe(true)
     await expect(page.locator('.scene-error')).toHaveCount(0)
   }
-  await expect(page.getByText('Em breve')).toHaveCount(0)
+  await expect(page.getByRole('navigation').getByText('Em breve')).toHaveCount(
+    0,
+  )
 })
 
 test('unknown routes redirect and the fifth experience opens directly', async ({
@@ -130,7 +142,9 @@ test('unknown routes redirect and the fifth experience opens directly', async ({
   await page.goto('/nao-existe')
   await expect(page).toHaveURL(/\/mare$/)
   await expect(page.locator('.mare-experience')).toHaveClass(/is-ready/)
-  await expect(page.getByText('Em breve')).toHaveCount(0)
+  await expect(page.getByRole('navigation').getByText('Em breve')).toHaveCount(
+    0,
+  )
   await page.goto('/tunel')
   await expect(page.locator('.tunnel-experience')).toHaveClass(/is-ready/)
   await expect(page.locator('canvas')).toHaveCount(1)
@@ -150,6 +164,8 @@ test('a lost GPU context gives a recoverable error in every scene', async ({
     '/liquido',
     '/planeta',
     '/tunel',
+    '/marte',
+    '/sistema-solar',
   ]) {
     await page.goto(route)
     await expect(page.locator('.experience')).toHaveClass(/is-ready/)
@@ -167,6 +183,88 @@ test('a lost GPU context gives a recoverable error in every scene', async ({
       page.getByRole('button', { name: 'Tentar novamente' }),
     ).toBeVisible()
   }
+})
+
+test('Mars looks sideways and up from the ground with no manual controls', async ({
+  page,
+}) => {
+  const errors: string[] = []
+  page.on('pageerror', (error) => errors.push(error.message))
+  page.on('console', (message) => {
+    if (message.type() === 'error') errors.push(message.text())
+  })
+  await page.goto('/marte')
+  await expect(page.locator('.mars-experience')).toHaveClass(/is-ready/)
+  await page.mouse.move(250, 450)
+  await page.waitForTimeout(900)
+  const left = await page.locator('canvas').screenshot()
+  expect(left.length).toBeGreaterThan(30_000)
+  await page.mouse.move(1200, 450)
+  await page.waitForTimeout(900)
+  const right = await page.locator('canvas').screenshot()
+  expect(right.equals(left)).toBe(false)
+  await page.mouse.move(720, 150)
+  await expect(page.locator('.mars-caption')).toContainText('Céu marciano')
+  await page.waitForTimeout(900)
+  expect((await page.locator('canvas').screenshot()).equals(right)).toBe(false)
+  await page.mouse.move(720, 880)
+  await expect(page.locator('.mars-caption')).toContainText('Solo marciano')
+  await expect(page.getByRole('button')).toHaveCount(0)
+  await expect(page.getByRole('slider')).toHaveCount(0)
+  await expect(page.locator('.scene-error')).toHaveCount(0)
+  expect(errors).toEqual([])
+})
+
+test('solar system orbits, changes perspective and highlights planets with the mouse', async ({
+  page,
+}) => {
+  const errors: string[] = []
+  page.on('pageerror', (error) => errors.push(error.message))
+  page.on('console', (message) => {
+    if (message.type() === 'error') errors.push(message.text())
+  })
+  await page.goto('/sistema-solar')
+  await expect(page.locator('.solar-experience')).toHaveClass(/is-ready/)
+  await expect(page.locator('canvas')).toHaveCount(1)
+  await expect(
+    page
+      .getByRole('navigation')
+      .getByRole('link', { name: 'Sistema solar', exact: true }),
+  ).toHaveAttribute('aria-current', 'page')
+  await expect(page.locator('[data-planet]')).toHaveCount(8)
+  const label = page.locator('[data-planet="Terra"]')
+  const initial = (await label.boundingBox())!
+  await page.waitForTimeout(1000)
+  const orbiting = (await label.boundingBox())!
+  expect(
+    Math.hypot(orbiting.x - initial.x, orbiting.y - initial.y),
+  ).toBeGreaterThan(0.1)
+  for (const name of ['Terra', 'Saturno', 'Júpiter', 'Netuno']) {
+    const planet = page.locator(`[data-planet="${name}"]`)
+    const bounds = (await planet.boundingBox())!
+    await page.mouse.move(
+      bounds.x + bounds.width / 2,
+      bounds.y + bounds.height / 2,
+    )
+    await expect(page.locator('.solar-facts h2')).toHaveText(name)
+    await expect(planet).toHaveClass(/is-highlighted/)
+    await expect(page.locator('.solar-facts p')).not.toBeEmpty()
+    await page.mouse.move(700, 870)
+    await expect(page.locator('.solar-facts')).not.toHaveClass(/has-planet/)
+  }
+  const lower = (await label.boundingBox())!
+  await page.mouse.move(1150, 150)
+  await page.waitForTimeout(1100)
+  const upper = (await label.boundingBox())!
+  expect(Math.hypot(upper.x - lower.x, upper.y - lower.y)).toBeGreaterThan(5)
+  expect((await page.locator('canvas').screenshot()).length).toBeGreaterThan(
+    30_000,
+  )
+  await expect(page.getByRole('slider')).toHaveCount(0)
+  await expect(page.getByRole('button')).toHaveCount(0)
+  await expect(page.getByText('Em breve')).toHaveCount(0)
+  await expect(page.locator('.scene-error')).toHaveCount(0)
+  expect(errors).toEqual([])
 })
 
 test('tunnel steering and speed respond to the mouse without manual controls', async ({

@@ -39,4 +39,20 @@ export const experiences = [
     description:
       'Uma viagem por um túnel de partículas, com direção e velocidade guiadas pelo cursor.',
   },
+  {
+    path: '/marte',
+    name: 'Marte',
+    ready: true,
+    title: 'Um passo em outro mundo.',
+    description:
+      'Uma vista em primeira pessoa no solo de Marte. Explore o horizonte e o céu com o mouse.',
+  },
+  {
+    path: '/sistema-solar',
+    name: 'Sistema solar',
+    ready: true,
+    title: 'Nosso lugar entre os planetas.',
+    description:
+      'O Sol, a Terra e os outros planetas em órbitas ilustrativas. O mouse muda a perspectiva e revela cada mundo.',
+  },
 ] as const
