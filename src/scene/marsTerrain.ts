@@ -89,21 +89,26 @@ export function createMarsRocks() {
   const rocks = new THREE.InstancedMesh(geometry, material, 650)
   const dummy = new THREE.Object3D(),
     color = new THREE.Color()
+  let placed = 0
   for (let i = 0; i < rocks.count; i++) {
     const angle = i * 2.399963
     const radius = 5 + Math.pow(hash(i, 5), 1.1) * 125
     const x = Math.cos(angle) * radius,
       z = Math.sin(angle) * radius
+    // Leave the expedition's desktop and mobile footprints clear of boulders.
+    if (Math.abs(x) < 6 && z > -17 && z < -7) continue
     const size =
       (0.07 + Math.pow(hash(i, 8), 3) * 1.1) * (radius < 12 ? 0.45 : 1)
     dummy.position.set(x, marsHeight(x, z) + size * 0.18, z)
     dummy.rotation.set(hash(i, 9) * 0.6, angle, hash(i, 10) * 0.5)
     dummy.scale.set(size * (1 + hash(i, 11)), size * 0.65, size)
     dummy.updateMatrix()
-    rocks.setMatrixAt(i, dummy.matrix)
+    rocks.setMatrixAt(placed, dummy.matrix)
     color.set('#896654').multiplyScalar(0.75 + hash(i, 15) * 0.35)
-    rocks.setColorAt(i, color)
+    rocks.setColorAt(placed, color)
+    placed++
   }
+  rocks.count = placed
   rocks.instanceMatrix.needsUpdate = true
   rocks.instanceColor!.needsUpdate = true
   rocks.computeBoundingSphere()

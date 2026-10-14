@@ -17,7 +17,7 @@ A home redireciona para `/mare`. `/particulas` traz um jardim com 32 mil pontos:
 
 `/tunel` leva a uma viagem contínua por anéis luminosos e partículas, com curvas e profundidade. O mouse horizontal guia a direção; no topo, a viagem acelera, o campo de visão abre e os rastros se alongam; embaixo, a câmera segue em deriva lenta. A geometria é reciclada nos shaders, sem reconstrução a cada frame.
 
-`/marte` coloca a câmera no solo, na altura de uma pessoa, diante de montanhas e dunas ferrugem. O mouse horizontal guia o olhar para os lados; o vertical permite olhar para o céu e voltar ao chão. Terreno, pedras, textura mineral e poeira são gerados localmente. A cena é uma interpretação visual de Marte.
+`/marte` coloca a câmera no solo, na altura de uma pessoa, diante de montanhas e dunas ferrugem. Um rover inspirado nos veículos da NASA fica à esquerda, um astronauta de traje branco e visor dourado no centro e um ET verde com a mão levantada à direita. Os três modelos usam geometria local, com enquadramento adaptado ao celular e sombras de contato sobre o terreno. O mouse horizontal guia o olhar para os lados; o vertical permite olhar para o céu e voltar ao chão. Terreno, pedras, textura mineral e poeira também são gerados localmente. A cena é uma interpretação visual de Marte.
 
 `/sistema-solar` apresenta o Sol e os oito planetas em órbitas ilustrativas, com a Lua, os anéis de Saturno, um cinturão de asteroides e estrelas ao fundo. O mouse horizontal gira a perspectiva; o vertical muda a inclinação. Passar sobre um planeta ou seu nome destaca a órbita e pausa a cena para ler uma breve descrição. Texturas e luzes são geradas localmente; tamanhos, distâncias e velocidades foram ajustados para mostrar o conjunto.
 

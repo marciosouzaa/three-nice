@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { createMarsRocks, createMarsTerrain, marsHeight } from './marsTerrain'
+import { createMarsExpedition } from './marsExpedition'
 import {
   dustFragment,
   dustVertex,
@@ -57,7 +58,7 @@ export function Mars({ paused, onReady, onError }: MarsProps) {
     renderer.domElement.setAttribute('role', 'img')
     renderer.domElement.setAttribute(
       'aria-label',
-      'Vista em primeira pessoa no solo de Marte, com pedras, montanhas ao longe e céu de poeira. O mouse guia o olhar.',
+      'Vista em primeira pessoa no solo de Marte: rover de exploração NASA à esquerda, astronauta no centro e ET à direita, com montanhas e céu de poeira. O mouse guia o olhar.',
     )
     host.appendChild(renderer.domElement)
     const scene = new THREE.Scene()
@@ -108,6 +109,8 @@ export function Mars({ paused, onReady, onError }: MarsProps) {
     scene.add(new THREE.Mesh(terrainGeometry, terrainMaterial))
     const rocks = createMarsRocks()
     scene.add(rocks)
+    const expedition = createMarsExpedition()
+    scene.add(expedition.group)
     const dustGeometry = new THREE.BufferGeometry()
     const dustPositions = new Float32Array(180 * 3)
     for (let i = 0; i < 180; i++) {
@@ -138,6 +141,7 @@ export function Mars({ paused, onReady, onError }: MarsProps) {
     const resize = () => {
       const { width, height } = host.getBoundingClientRect()
       camera.aspect = width / Math.max(height, 1)
+      expedition.layout(width < 760)
       camera.updateProjectionMatrix()
       renderer.setSize(width, height)
     }
@@ -201,6 +205,24 @@ export function Mars({ paused, onReady, onError }: MarsProps) {
       document.removeEventListener('visibilitychange', visibility)
       renderer.domElement.removeEventListener('webglcontextlost', lost)
       rocks.dispose()
+      const actorGeometries = new Set<THREE.BufferGeometry>()
+      const actorMaterials = new Set<THREE.Material>()
+      const actorTextures = new Set<THREE.Texture>()
+      expedition.group.traverse((object) => {
+        if (!(object instanceof THREE.Mesh)) return
+        actorGeometries.add(object.geometry)
+        const materials = Array.isArray(object.material)
+          ? object.material
+          : [object.material]
+        materials.forEach((material) => {
+          actorMaterials.add(material)
+          if ('map' in material && material.map instanceof THREE.Texture)
+            actorTextures.add(material.map)
+        })
+      })
+      actorGeometries.forEach((geometry) => geometry.dispose())
+      actorMaterials.forEach((material) => material.dispose())
+      actorTextures.forEach((texture) => texture.dispose())
       ;[skyGeometry, terrainGeometry, rocks.geometry, dustGeometry].forEach(
         (geometry) => geometry.dispose(),
       )
